@@ -9,6 +9,8 @@ export default {
   mounted () {
     console.log(this.link)
     this.qrcode();
+
+
   },
 
   data () {

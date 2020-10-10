@@ -2,23 +2,22 @@
   <div class="reception">
     <div v-for="(list, index) in listCard" :key="index" class="header">
       <div>
-        亲爱的 {{ list.doneeName }}!{{ list.giverName }}({{
-          list.giverPhone
-        }})赠送你一张{{ list.cardType }}：
+        亲爱的 {{ list.doneeName }}({{ list.doneePhone }})赠送你一张{{
+          list.cardType
+        }}：
       </div>
     </div>
-    <van-swipe class="my-swipe" indicator-color="white" height="500">
-      <van-swipe-item>1</van-swipe-item>
-      <van-swipe-item>2</van-swipe-item>
-      <van-swipe-item>3</van-swipe-item>
-      <van-swipe-item>4</van-swipe-item>
+    <van-swipe class="my-swipe">
+      <van-swipe-item v-for="(image, index) in images" :key="index">
+        <img v-lazy="image" class="img" />
+      </van-swipe-item>
     </van-swipe>
 
     <div class="but">
       <van-button type="primary" to="/">取消</van-button>
-      <van-button type="primary" @click="take">接受</van-button>
+      <van-button type="primary" @click="confirm">接受</van-button>
     </div>
-    <div class="popups">
+    <!-- <div class="popups">
       <van-overlay :show="isShow" @click="isShow = false">
         <div class="wrapper">
           <div class="block" @click.stop>
@@ -38,7 +37,7 @@
           </div>
         </div>
       </van-overlay>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -49,7 +48,14 @@ export default {
       message: '',
       listCard: [],
       isShow: false,
-      doneePhone: ''
+      doneePhone: '',
+      images: [
+        require('../assets/image/闺蜜文案.jpg'),
+        require('../assets/image/品牌介绍.jpg'),
+        require('../assets/image/活动套餐.jpg'),
+        require('../assets/image/使用规则2.jpg'),
+      ],
+      tel: ''
     }
   },
   mounted () {
@@ -84,30 +90,18 @@ export default {
           this.giverPhone = list[i].giverPhone
         }
         this.listCard = list
-        console.log(this.giverPhone)
+        console.log(this.listCard)
       })
     },
-    take () {
-      this.isShow = true
-    },
+
     //确定领券
     confirm () {
-      let list = this.listCard
-      let doneePhone = this.doneePhone
-      list.forEach(el => {
-        if (doneePhone === el.doneePhone) {
-          doneePhone = el.doneePhone
-          let data = {
-            id: el.id
-          }
-          updateCard(data).then(res => {
-            console.log(res)
-            this.$router.push({ path: '/donation', query: { doneePhone: doneePhone } })
+      let data = {
+        id: this.$route.query.id
+      }
+      updateCard(data).then(res => {
+        console.log(res)
 
-          })
-        } else {
-          this.$toast('请输入正确的手机号');
-        }
       })
     }
   }
@@ -125,7 +119,14 @@ export default {
   font-size: 20px;
   line-height: 150px;
   text-align: center;
-  background-color: #39a9ed;
+  height: 500px;
+}
+.img {
+  width: 355px;
+  height: 500px;
+  max-width: 100%;
+  max-height: 100%;
+  margin-top: 12px;
 }
 .but {
   position: absolute;

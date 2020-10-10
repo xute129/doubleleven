@@ -1,9 +1,12 @@
 <template>
   <div class="hello">
     <div class="img">
-      <img src="../assets/logo.png" />
+      <van-swipe class="my-swipe">
+        <van-swipe-item v-for="(image, index) in images" :key="index">
+          <img v-lazy="image" class="img" />
+        </van-swipe-item>
+      </van-swipe>
     </div>
-
     <div class="but">
       <van-button type="primary" to="/activities">参与活动</van-button>
       <van-button type="primary" @click="isShow = true">我的转赠</van-button>
@@ -38,10 +41,17 @@ export default {
   data () {
     return {
       isShow: false,
-      giverPhone: ''
+      giverPhone: '',
+      images: [
+        require('../assets/image/主画面.jpg'),
+        require('../assets/image/品牌介绍.jpg'),
+        require('../assets/image/活动套餐.jpg'),
+        require('../assets/image/使用规则1.jpg'),
+      ]
     }
   },
   methods: {
+    //根据号码查询券信息
     getdonation () {
       let data = {
         giverPhone: this.giverPhone
@@ -72,9 +82,12 @@ export default {
 .hello {
   text-align: center;
 }
-.hello .img {
+
+.hello .img img {
   height: 600px;
-  background: chocolate;
+  width: 375px;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 .hello .but {
   position: absolute;

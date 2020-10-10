@@ -1,17 +1,27 @@
 <template>
   <div class="donation">
     <div class="header" v-for="(item, index) in listCard" :key="index">
-      <div class="list">
-        <img src="../assets/logo.png" style="width: 80px; height: 80px" />
+      <div class="card" :style="{ background: color }"></div>
+      <div class="textCard" :style="{ color: color }">
+        {{ item.cardType }}
       </div>
-      <div class="right">
-        <div class="left">被赠人：{{ item.doneeName }}</div>
-        <div class="left" style="margin-left: 5px">
-          联系方式：{{ item.doneePhone }}
+      <div class="border">
+        <span :style="{ color: receive }">{{ item.cardStatus }}</span>
+      </div>
+      <div class="zeng">
+        赠予<span>{{ item.giverName }}</span>
+      </div>
+      <div class="phone">
+        <img src="../image/电话.png" />
+        <span>{{ item.giverPhone }}</span>
+      </div>
+      <div class="footer">
+        <div>
+          门店地址：<span>{{ item.store.storeAddress }}</span>
         </div>
-        <div class="left" style="color: #999">{{ item.cardStatus }}</div>
-        <div style="font-size: 12px">赠送卡类型：{{ item.cardType }}</div>
-        <div style="font-size: 10px">使用门店地址：{{ item.storeAddress }}</div>
+        <div>
+          门店电话：<span>{{ item.store.storePhone }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -22,7 +32,19 @@ export default {
   data () {
     return {
       listCard: [],
-      doneePhone: ''
+      doneePhone: '',
+      color: '',
+    }
+  },
+  computed: {
+    receive () {
+      let list = this.listCard
+      let color = ''
+      for (let index = 0; index < list.length; index++) {
+        color = list[index].cardStatus
+        color === '未领用' ? '#38ADF1' : '#8D96A7'
+      }
+      return color
     }
   },
   watch: {
@@ -35,11 +57,11 @@ export default {
     this.doneePhone = this.$route.query.doneePhone
   },
   methods: {
-    getdonation (doneePhone) {
+    //根据条件查询信息
+    getdonation () {
       let cardStatus = ''
       let cardType = ''
       let data = {
-        doneePhone: doneePhone,
         giverPhone: this.$route.query.giverPhone
       }
       getDonation(data).then(res => {
@@ -63,6 +85,7 @@ export default {
           list[i].cardStatus = cardStatus
           list[i].cardType = cardType
         }
+        console.log(this.color)
         this.listCard = list
       })
     }
@@ -71,25 +94,116 @@ export default {
 </script>
 <style scoped>
 .donation {
-  margin-top: 20px;
-  margin: 0 10px;
-  font-size: 8px;
-  line-height: 24px;
+  width: 375px;
+  opacity: 1;
 }
-.donation .header {
-  margin-top: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #999999;
-}
-.donation .list {
-  float: left;
-}
-.right {
+.header {
+  width: 351px;
+  height: 170px;
+  background: #ffffff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  opacity: 1;
+  border-radius: 4px;
+  margin-top: 11px;
   position: relative;
-  left: 10px;
+  left: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
 }
-.donation .right .left {
-  display: inline-block;
-  vertical-align: bottom;
+.card {
+  width: 5px;
+  height: 30px;
+  background: #ff9b43;
+  opacity: 1;
+  border-radius: 4px 0px 0px 0px;
+}
+.textCard {
+  width: 51px;
+  height: 21px;
+  font-size: 17px;
+  font-family: Microsoft YaHei UI;
+  font-weight: 400;
+  line-height: 21px;
+  color: #ff9b43;
+  opacity: 1;
+  margin-left: 8px;
+  margin-top: 4px;
+}
+.border {
+  width: 50px;
+  height: 20px;
+  border: 1px solid #38adf1;
+  opacity: 1;
+  border-radius: 2px;
+  margin-top: 4px;
+  margin-left: 232px;
+}
+.border span {
+  width: 39px;
+  height: 16px;
+  font-size: 13px;
+  font-family: Microsoft YaHei UI;
+  font-weight: 400;
+  line-height: 16px;
+  color: #38adf1;
+  padding-top: 2px;
+  margin-left: 6px;
+  opacity: 1;
+}
+.zeng {
+  font-size: 17px;
+  font-family: Microsoft YaHei UI;
+  font-weight: 400;
+  line-height: 21px;
+  color: #babfc8;
+  opacity: 1;
+  margin-top: 15px;
+  margin-left: 12px;
+}
+.zeng span {
+  font-size: 20px;
+  font-family: Microsoft YaHei UI;
+  font-weight: 400;
+  line-height: 25px;
+  color: #333944;
+  opacity: 1;
+  margin-left: 11px;
+}
+.phone img {
+  opacity: 1;
+  border-radius: 4px;
+  margin-left: 59px;
+  position: relative;
+  top: 16px;
+}
+.phone span {
+  font-size: 20px;
+  font-family: Microsoft YaHei UI;
+  font-weight: 400;
+  line-height: 25px;
+  color: #333944;
+  opacity: 1;
+  position: relative;
+  top: 12px;
+}
+.footer {
+  width: 335px;
+  height: 82px;
+  background: #f5f8f9;
+  opacity: 1;
+  border-radius: 4px;
+  margin-left: 8px;
+  margin-top: 8px;
+}
+.footer div {
+  font-size: 15px;
+  font-family: Microsoft YaHei UI;
+  font-weight: 400;
+  line-height: 19px;
+  color: #8d96a7;
+  opacity: 1;
+  margin-left: 9px;
+  margin-top: 8px;
 }
 </style>

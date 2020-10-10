@@ -3,9 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import Vant from 'vant';
+import Vant, { Lazyload } from 'vant';
 import 'vant/lib/index.css';
 
+Vue.use(Lazyload);
 Vue.use(Vant);
 
 Vue.config.productionTip = false

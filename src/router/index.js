@@ -6,6 +6,10 @@ import donation from '@/components/donation'
 import reception from '@/components/reception'
 import homecode from '@/components/homecode'
 import givecode from '@/components/givecode'
+import mycard from '@/components/mycard'
+
+import admin from '@/pages/index'
+import details from '@/pages/details'
 
 Vue.use(Router)
 
@@ -40,6 +44,21 @@ export default new Router({
       path: '/givecode',
       name: 'givecode',
       component: givecode
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: admin
+    },
+    {
+      path: '/details',
+      name: 'details',
+      component: details
+    },
+    {
+      path: '/mycard',
+      name: 'mycard',
+      component: mycard
     }
   ]
 })

@@ -13,6 +13,7 @@ export default {
 
   data () {
     return {
+      //根据添加的信息生成二维码返回对应的信息
       link: `http://172.16.10.81:8080/#/reception?id=${this.$route.query.id}`
     }
   },
