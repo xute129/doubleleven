@@ -214,6 +214,7 @@ export default {
       }
       Addactivities(data).then(res => {
         console.log(res)
+
         this.$router.push({ path: '/givecode', query: { id: res.data.data } })
       })
     }

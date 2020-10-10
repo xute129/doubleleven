@@ -70,8 +70,6 @@ export default {
             this.$toast('请输入正确的手机号');
           }
         }
-
-
       })
     }
   }
