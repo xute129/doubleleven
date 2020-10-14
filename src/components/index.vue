@@ -151,7 +151,7 @@ export default {
   background-size: contain;
   height: 100%;
 }
-.hello .but {
+.but {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -161,7 +161,7 @@ export default {
   flex-direction: column;
   margin: 0px;
 }
-.but .zeng {
+.zeng {
   width: 60px;
   /* height: 19px; */
   font-size: 15px;
@@ -179,7 +179,7 @@ export default {
   border: 1px solid #00584a;
   position: relative;
 }
-.but .zeng img {
+.zeng img {
   vertical-align: middle;
   margin-top: 3px;
 }
