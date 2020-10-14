@@ -76,9 +76,9 @@ export default {
           if (list[i].cardType === 1) {
             cardType = '闺蜜卡'
           } else if (list[i].cardType === 2) {
-            cardType = '感恩卡'
-          } else {
             cardType = '美妈卡'
+          } else {
+            cardType = '好友卡'
           }
           list[i].cardStatus = cardStatus
           list[i].cardType = cardType

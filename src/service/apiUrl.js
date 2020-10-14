@@ -9,5 +9,6 @@ export default {
     Signature: '/wx/wechat/getSignature', //微信分享
     queryNearStore: '/store/queryNearStore', //查询附近门店
     queryShopInfo: '/store/queryShopInfo', //根据省市查询门店信息
-    queryListStore: '/store/queryListStore' //查询所有门店
+    queryListStore: '/store/queryListStore', //查询所有门店
+    queryShopProvinceOrCity: '/store/queryShopProvinceOrCity' //查询省市
 }

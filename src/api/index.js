@@ -77,3 +77,13 @@ export const queryListStore = (data) => {
         data
     })
 }
+
+//查询省市
+
+export const queryShopProvinceOrCity = (data = {}) => {
+    return requset({
+        url: apiUrl.queryShopProvinceOrCity,
+        method: 'post',
+        data
+    })
+}

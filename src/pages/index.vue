@@ -18,7 +18,7 @@ export default {
   }
 }
 </script>
-<style scope>
+<style scoped>
 .admin input {
   width: 327px;
   height: 48px;

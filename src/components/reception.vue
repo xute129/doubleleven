@@ -1,7 +1,13 @@
 <template>
   <div class="reception">
     <div class="img">
-      <van-swipe class="my-swipe" style="height: 750px" vertical>
+      <van-swipe
+        class="my-swipe"
+        style="height: 100vh"
+        vertical
+        :loop="false"
+        @change="showIs"
+      >
         <van-swipe-item v-for="(image, index) in images" :key="index">
           <img v-lazy="image" class="img" />
         </van-swipe-item>
@@ -10,14 +16,18 @@
         </template>
       </van-swipe>
     </div>
-    <div class="header" v-for="(item, index) in listCard" :key="index">
-      <div class="love">亲爱的{{ item.doneeName }}({{ item.doneePhone }}):</div>
-      <div class="love">
-        {{ item.giverName }}({{ item.giverPhone }})送你一张{{ item.cardType }}
+    <div v-if="show">
+      <div class="header" v-for="(item, index) in listCard" :key="index">
+        <div class="love">
+          亲爱的{{ item.doneeName }}({{ item.doneePhone }}):
+        </div>
+        <div class="love">
+          {{ item.giverName }}({{ item.giverPhone }})送你一张{{ item.cardType }}
+        </div>
       </div>
-    </div>
-    <div class="but" @click="confirm">
-      <a><img src="../image/接收赠卡.png" /></a>
+      <div class="but" @click="confirm">
+        <a><img src="../image/接收赠卡.png" /></a>
+      </div>
     </div>
     <!-- <div class="popups">
       <van-overlay :show="isShow" @click="isShow = false">
@@ -56,19 +66,26 @@ export default {
         require('../assets/image/活动套餐.jpg'),
         require('../assets/image/使用规则2.jpg'),
       ],
-      tel: ''
+      tel: '',
+      show: true
     }
   },
 
-  mounted () {
+  created () {
     this.getdonation()
-
   },
   methods: {
+    showIs (index) {
+      if (index === 0) {
+        this.show = true
+      } else {
+        this.show = false
+      }
+    },
     //根据分享id查询信息
     getdonation () {
       let data = {
-        id: this.$route.query.id
+        id: parseInt(this.$route.query.id)
       }
       getDonation(data).then(res => {
         let list = []
@@ -117,22 +134,28 @@ export default {
         console.log(el.cardType);
       });
 
-      console.log(cardType)
       if (cardType === '闺蜜卡') {
-        image1 = require('../image/闺蜜文案.jpg')
+        image1 = require('../image/收卡-闺蜜文案(1).jpg')
       } else if (cardType === '美妈卡') {
-        image1 = require('../image/美妈文案.jpg')
+        image1 = require('../image/收卡-美妈文案(1).jpg')
       } else {
-        image1 = require('../image/朋友感恩文案.jpg')
+        image1 = require('../image/收卡-朋友文案(1).jpg')
       }
       this.images.splice(0, 0, image1)
-
       console.log(this.images);
     }
   }
 }
 </script>
 <style scope>
+.reception {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 .header {
   position: absolute;
   top: 60px;
@@ -157,7 +180,7 @@ export default {
 }
 .but {
   position: absolute;
-  bottom: 0;
+  bottom: 20px;
   margin: 0 120px;
 }
 

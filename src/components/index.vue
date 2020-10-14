@@ -5,7 +5,7 @@
         class="my-swipe"
         :loop="false"
         vertical
-        :style="'height:' + height + 'px;'"
+        :style="'height: 100vh;'"
       >
         <van-swipe-item v-for="(image, index) in images" :key="index">
           <img v-lazy="image" class="img" />
@@ -75,7 +75,7 @@ export default {
     }
   },
   created () {
-    this.height = this.calcHeight()
+    // this.height = this.calcHeight()
     this.getCode()
   },
 
@@ -151,9 +151,17 @@ export default {
   background-size: contain;
   height: 100%;
 }
+.hello {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 .but {
   position: absolute;
-  bottom: 0;
+  bottom: 20px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -162,8 +170,6 @@ export default {
   margin: 0px;
 }
 .zeng {
-  width: 60px;
-  /* height: 19px; */
   font-size: 15px;
   font-family: Microsoft YaHei UI;
   font-weight: 400;
