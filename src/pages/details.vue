@@ -1,37 +1,48 @@
 <template>
   <div class="details">
-    <div class="header">
-      <div class="card"></div>
-      <div class="textCard">闺蜜卡</div>
-      <div class="border"><span>未领取</span></div>
-      <div class="zeng"><span>臧紫宜</span><br />13188656331</div>
-      <div class="zeng" style="margin-left: 106px">
-        <span>臧紫宜</span><br />13188656331
+    <div class="image">
+      <div class="header">
+        <div class="card"></div>
+        <div class="textCard">闺蜜卡</div>
+        <div class="border"><span>未领取</span></div>
+        <div class="zeng"><span>臧紫宜</span><br />13188656331</div>
+        <div class="zeng" style="margin-left: 106px">
+          <span>臧紫宜</span><br />13188656331
+        </div>
+        <div class="footer">
+          <div>门店地址：<span>广州市天河区猎德街道珠江东路6号</span></div>
+          <div>门店电话：<span>18678471296</span></div>
+        </div>
+        <img src="" />
       </div>
-      <div class="footer">
-        <div>门店地址：<span>广州市天河区猎德街道珠江东路6号</span></div>
-        <div>门店电话：<span>18678471296</span></div>
-      </div>
-      <img src="../image/组件 14 – 2.png" />
-    </div>
 
-    <div class="header">
-      <div class="card"></div>
-      <div class="textCard">闺蜜卡</div>
-      <div class="border"><span>未领取</span></div>
-      <div class="zeng"><span>臧紫宜</span><br />13188656331</div>
-      <div class="zeng" style="margin-left: 106px">
-        <span>臧紫宜</span><br />13188656331
+      <div class="header">
+        <div class="card"></div>
+        <div class="textCard">闺蜜卡</div>
+        <div class="border"><span>未领取</span></div>
+        <div class="zeng"><span>臧紫宜</span><br />13188656331</div>
+        <div class="zeng" style="margin-left: 106px">
+          <span>臧紫宜</span><br />13188656331
+        </div>
+        <div class="footer">
+          <div>门店地址：<span>广州市天河区猎德街道珠江东路6号</span></div>
+          <div>门店电话：<span>18678471296</span></div>
+        </div>
+        <img src="" />
       </div>
-      <div class="footer">
-        <div>门店地址：<span>广州市天河区猎德街道珠江东路6号</span></div>
-        <div>门店电话：<span>18678471296</span></div>
-      </div>
-      <img src="../image/组件 14 – 2.png" />
     </div>
   </div>
 </template>
 <style scoped>
+.details {
+  display: flex;
+  flex-wrap: wrap-reverse;
+}
+.image {
+  background-image: url("../image/ping.jpg");
+  width: 100%;
+  height: 667px;
+}
 .header {
   width: 351px;
   height: 208px;
@@ -46,6 +57,7 @@
   align-content: flex-start;
   margin-top: 12px;
 }
+
 .card {
   width: 5px;
   height: 30px;

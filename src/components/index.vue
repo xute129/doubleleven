@@ -1,17 +1,36 @@
 <template>
   <div class="hello">
     <div class="img">
-      <van-swipe class="my-swipe">
+      <van-swipe
+        class="my-swipe"
+        :loop="false"
+        vertical
+        :style="'height:' + height + 'px;'"
+      >
         <van-swipe-item v-for="(image, index) in images" :key="index">
           <img v-lazy="image" class="img" />
         </van-swipe-item>
+        <template #indicator>
+          <div class="custom-indicator"></div>
+        </template>
       </van-swipe>
+      <div class="but">
+        <div @click="activity">
+          <a>
+            <img
+              src="../image/参加活动.png"
+              style="width: 170px; height: 60px"
+            />
+          </a>
+        </div>
+        <div class="zeng" @click="make">
+          <span>我的转赠</span>
+          <div class="bor"></div>
+        </div>
+      </div>
     </div>
-    <div class="but">
-      <van-button type="primary" to="/activities">参与活动</van-button>
-      <van-button type="primary" @click="isShow = true">我的转赠</van-button>
-    </div>
-    <div class="popups">
+
+    <!-- <div class="popups">
       <van-overlay :show="isShow" @click="isShow = false">
         <div class="wrapper">
           <div class="block" @click.stop>
@@ -31,75 +50,143 @@
           </div>
         </div>
       </van-overlay>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import { getDonation } from '../api/index'
+import { getWxUserInfo, getDonation } from '../api/index'
+import wx from 'weixin-js-sdk'
+import axios from 'axios'
 export default {
   data () {
     return {
       isShow: false,
       giverPhone: '',
       images: [
-        require('../assets/image/主画面.jpg'),
-        require('../assets/image/品牌介绍.jpg'),
+        require('../image/主画面.png'),
         require('../assets/image/活动套餐.jpg'),
-        require('../assets/image/使用规则1.jpg'),
-      ]
+        require('../image/zhuyemian.png'),
+        require('../assets/image/品牌介绍.jpg'),
+      ],
+      code: '',
+      list: {},
+      height: 0
     }
   },
+  created () {
+    this.height = this.calcHeight()
+    this.getCode()
+  },
+
   methods: {
-    //根据号码查询券信息
-    getdonation () {
-      let data = {
-        giverPhone: this.giverPhone
-      }
-      console.log(data)
-      getDonation(data).then(res => {
-        let list = []
-        list = res.data.data
-        console.log(list)
-        let giverPhone = this.giverPhone
-        for (let i = 0; i < list.length; i++) {
-          console.log(list[i].giverPhone)
-          if (list[i].giverPhone === giverPhone) {
-            this.$router.push({ path: '/donation', query: { giverPhone: this.giverPhone } })
-          } else {
-            this.$toast('请输入正确的手机号');
-          }
+    calcHeight () {
+      return document.body.clientHeight
+    },
+    getCode () { // 非静默授权，第一次有弹框
+      console.log('code', this.code)
+
+      var local = 'http://tools.fwh1988.cn/active1111/' // 获取页面url
+      var appid = 'wxce2648786b0f1843'
+      if (!sessionStorage.getItem('mycode')) {
+        const code = this.getUrlCode().code
+        if (code) {
+          sessionStorage.setItem('mycode', code)
+          this.init()
+        } else {
+          window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=111#wechat_redirect`
         }
+      }
+    },
+    init () {
+      const data = {
+        code: sessionStorage.getItem('mycode')
+      }
+      getWxUserInfo(data).then(res => {
+        console.log(res.data)
+        this.list = res.data.data
+        sessionStorage.setItem('listUsername', JSON.stringify(res.data.data))
+
       })
-    }
+    },
+    // 截取url中的code方法
+    getUrlCode () {
+      var url = location.search
+      this.winUrl = url
+      var theRequest = new Object()
+      if (url.indexOf("?") != -1) {
+        var str = url.substr(1)
+        var strs = str.split("&")
+        for (var i = 0; i < strs.length; i++) {
+          theRequest[strs[i].split("=")[0]] = (strs[i].split("=")[1])
+        }
+      }
+      return theRequest
+    },
+
+    //参与活动
+    activity () {
+      this.$router.push({ path: '/activities' })
+    },
+
+    //我的转赠
+    make () {
+      let list = JSON.parse(sessionStorage.getItem('listUsername'))
+      console.log(list)
+      const data = {
+        giverPhone: list.phone
+      }
+      getDonation(data).then(res => {
+        console.log(res)
+        this.$router.push({ path: '/donation', query: { giverPhone: list.phone } })
+      })
+    },
   }
 }
 </script>
-
-<style scoped>
-.hello {
-  text-align: center;
-}
-
+<style  scoped>
 .hello .img img {
-  height: 600px;
-  width: 375px;
+  width: 100%;
   background-repeat: no-repeat;
   background-size: contain;
+  height: 100%;
 }
 .hello .but {
   position: absolute;
   bottom: 0;
-  left: 30px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0px;
 }
-.hello .but button {
-  margin-left: 50px;
-  margin-bottom: 10px;
+.but .zeng {
+  width: 60px;
+  /* height: 19px; */
+  font-size: 15px;
+  font-family: Microsoft YaHei UI;
+  font-weight: 400;
+  line-height: 19px;
+  color: #00584a;
+  position: relative;
+  top: -8px;
 }
+
+.bor {
+  width: 60px;
+  height: 0px;
+  border: 1px solid #00584a;
+  position: relative;
+}
+.but .zeng img {
+  vertical-align: middle;
+  margin-top: 3px;
+}
+
 .wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
 }
 </style>

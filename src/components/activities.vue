@@ -1,18 +1,42 @@
 <template>
   <div class="activities">
-    <div class="image">
+    <div>
+      <div class="sel">
+        <div class="image">
+          <a @click="card('1')"><img src="../image/送闺蜜.png" alt="" /></a>
+          <a @click="card('2')"><img src="../image/送美妈.png" alt="" /></a>
+          <a @click="card('3')"><img src="../image/送好友.png" alt="" /></a>
+        </div>
+      </div>
       <div v-if="num === '1'">
-        <img src="../assets/image/闺蜜文案.jpg" />
+        <div class="images1"></div>
+        <!-- <van-image width="100%" :src="images" /> -->
       </div>
       <div v-else-if="num === '2'">
-        <img src="../assets/image/朋友感恩文案.jpg" />
+        <div class="images2"></div>
+        <!-- <van-image width="100%" :src="images2" /> -->
       </div>
       <div v-else>
-        <img src="../assets/image/美妈文案.jpg" />
+        <div class="images3"></div>
+        <!-- <van-image width="100%" :src="images1" /> -->
+      </div>
+      <div class="footer" @click="send">
+        <a>
+          <img src="../image/发送卡片.png" alt="" />
+        </a>
+      </div>
+      <div>
+        <!-- <button class="card" @click="card('1')">闺蜜卡</button>
+        <button class="card" @click="card('2')" style="background: #ffcd04">
+          感恩卡
+        </button>
+        <button class="card" @click="card('3')" style="background: #ff8ea9">
+          美妈卡
+        </button> -->
       </div>
     </div>
-    <div class="colorCard">
-      <!-- <van-field name="radio" label="亲友卡">
+    <!-- <div class="colorCard">
+      <van-field name="radio" label="亲友卡">
         <template #input>
           <van-radio-group
             v-model="radio"
@@ -24,7 +48,7 @@
             <van-radio name="3">美妈卡</van-radio>
           </van-radio-group>
         </template>
-      </van-field> -->
+      </van-field>
       <button class="card" @click="card('1')">闺蜜卡</button>
       <button class="card" @click="card('2')" style="background: #ffcd04">
         感恩卡
@@ -32,8 +56,8 @@
       <button class="card" @click="card('3')" style="background: #ff8ea9">
         美妈卡
       </button>
-    </div>
-    <div class="select">
+    </div> -->
+    <!-- <div class="select">
       <div class="text">赠送信息</div>
       <div class="user">
         <input type="text" class="name" v-model="username" />
@@ -70,16 +94,16 @@
         />
       </div>
     </div>
-    <div>
-      <van-button class="but" type="primary" to="/">取消</van-button>
-      <button
+    <div> -->
+    <!-- <van-button class="but" type="primary" to="/">取消</van-button> -->
+    <!-- <van-button
         class="but"
         style="background: #f9cb5d; color: #ffffff"
         @click="save"
       >
         立即赠送
-      </button>
-    </div>
+      </van-button>
+    </div> -->
     <!-- <van-form>
       <van-field name="radio" label="亲友卡">
         <template #input>
@@ -161,20 +185,10 @@ export default {
   data () {
     return {
       show: false,
-      images: [
-        require('../assets/image/闺蜜文案.jpg'),
-        require('../assets/image/品牌介绍.jpg'),
-        require('../assets/image/活动套餐.jpg'),
-        require('../assets/image/使用规则2.jpg'),
-      ],
+      images: require('../image/6.jpg'),
+      images1: require('../assets/image/朋友感恩文案.jpg'),
+      images2: require('../assets/image/美妈文案.jpg'),
       radio: '1',
-      username: '',  //送卡人名字
-      userphone: '', //送卡人电话
-      givename: '',  //被赠人名字
-      givephone: '', //被赠人电话
-      storeAddress: '', //门店地址
-      storePhone: '', //门店电话
-      storeNum: '' //门店编号
     }
   },
   computed: {
@@ -185,151 +199,64 @@ export default {
     }
   },
   methods: {
+    //显示对应的卡片
     card (value) {
       this.radio = value
       console.log(this.radio)
     },
-    //添加信息
-    save () {
-      if (this.username === '') {
-        this.$toast('请输入亲爱的');
-        return false
-      } else if (this.userphone === '') {
-        this.$toast('请输入手机号');
-        return false
-      } else if (this.givename === '') {
-        this.$toast('请输入被赠人姓名');
-        return false
-      } else if (this.givephone === '') {
-        this.$toast('请输入被赠人姓名手机号');
-        return false
-      }
-      let data = {
-        cardType: this.radio,
-        doneeName: this.username,
-        doneePhone: this.userphone,
-        giverName: this.givename,
-        giverPhone: this.givephone,
-        storeNum: '8200'
-      }
-      Addactivities(data).then(res => {
-        console.log(res)
 
-        this.$router.push({ path: '/givecode', query: { id: res.data.data } })
-      })
-    }
+    //发送卡片
+    send () {
+      sessionStorage.setItem('num', JSON.stringify(this.num))
+      this.$router.push({ path: '/mycard', query: { num: this.num } })
+    },
   }
 
 
 }
 </script>
 <style scoped>
+.images1 {
+  width: 100%;
+  height: 100vh;
+  background: url(../image/6.jpg) no-repeat center center;
+  background-size: 100% 100%;
+}
+.images2 {
+  width: 100%;
+  height: 100vh;
+  background: url(../image/8.jpg) no-repeat center center;
+  background-size: 100% 100%;
+}
+.images3 {
+  width: 100%;
+  height: 100vh;
+  background: url(../image/7.jpg) no-repeat center center;
+  background-size: 100% 100%;
+}
 .activities {
-  width: 375px;
   background: #ffffff;
   opacity: 1;
+  width: 100%;
+}
+.sel {
+  width: 100%;
+  margin-top: 15px;
+  position: absolute;
+  z-index: 999;
 }
 .image {
-  margin-left: 12px;
-  margin-top: 13px;
-}
-.image img {
-  height: 400px;
-  width: 350px;
-}
-.colorCard {
   display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-}
-.card {
-  width: 107px;
-  height: 58px;
-  background: #ff9b43;
-  opacity: 1;
-  border-radius: 4px;
-  margin-left: 14px;
-  margin-top: 10px;
-  border: 0px;
-  color: #ffffff;
-}
-
-.select {
-  width: 375px;
-  height: 163px;
-  background: #ffffff;
-  opacity: 1;
-}
-.select .text {
-  font-size: 15px;
-  font-family: Microsoft YaHei UI;
-  font-weight: 400;
-  line-height: 19px;
-  color: #5e5e5e;
-  opacity: 1;
-  margin-left: 13px;
-  margin-top: 8px;
-}
-.select .name {
-  width: 148px;
-  height: 48px;
-  background: #f5f7f9;
-  opacity: 1;
-  border-radius: 4px;
-  border: 0px;
-}
-.select .user {
-  margin-left: 12px;
-  margin-top: 16px;
-}
-.select .user img {
-  position: relative;
-  left: 152px;
-  top: -80px;
+  justify-content: space-around;
+  align-items: center;
 }
 .footer {
-  width: 375px;
-  height: 250px;
-  background: #ffffff;
-  opacity: 1;
-  margin-top: 8px;
-}
-.shopText {
-  width: 60px;
-  height: 19px;
-  font-size: 15px;
-  font-family: Microsoft YaHei UI;
-  font-weight: 400;
-  line-height: 19px;
-  color: #5e5e5e;
-  opacity: 1;
-  margin-left: 13px;
-}
-.shop input,
-textarea {
-  width: 351px;
-  height: 48px;
-  background: #f5f7f9;
-  opacity: 1;
-  border-radius: 4px;
-  border: 0px;
-  margin-left: 13px;
-  margin-top: 16px;
-}
-.but {
-  width: 170px;
-  height: 48px;
-  background: #ffffff;
-  border: 1px solid #dedede;
-  opacity: 1;
-  border-radius: 4px;
-  margin-top: 24px;
-  margin-left: 13px;
-  font-size: 20px;
-  font-family: Microsoft YaHei UI;
-  font-weight: 400;
-  line-height: 25px;
-  color: #a8a8a8;
-  margin-bottom: 12px;
+  width: 100%;
+  height: 10%;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  margin: 0%;
 }
 </style>

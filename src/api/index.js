@@ -32,3 +32,48 @@ export const updateCard = (data) => {
         data
     })
 }
+
+//微信授权
+export const getWxUserInfo = (data) => {
+    return requset({
+        url: apiUrl.WxUserInfo,
+        method: 'post',
+        data
+    })
+}
+
+//微信分享
+export const getSignature = (data) => {
+    return requset({
+        url: apiUrl.Signature,
+        method: 'post',
+        data
+    })
+}
+
+//经纬度查询门店
+export const queryNearStore = (data) => {
+    return requset({
+        url: apiUrl.queryNearStore,
+        method: 'post',
+        data
+    })
+}
+
+//省市查询门店
+export const queryShopInfo = (data) => {
+    return requset({
+        url: apiUrl.queryShopInfo,
+        method: 'post',
+        data
+    })
+}
+
+//查询所有门店
+export const queryListStore = (data) => {
+    return requset({
+        url: apiUrl.queryListStore,
+        method: 'post',
+        data
+    })
+}

@@ -5,10 +5,12 @@
 
 import axios from 'axios'
 
+
 //创建axios请求
 const service = axios.create({
     //请求接口域名
-    baseURL: 'http://172.16.10.21:30101',
+    baseURL: 'http://8.129.22.13:30101',
+    //baseURL: 'http://172.16.10.21:30101'
 })
 
 //添加请求拦截器

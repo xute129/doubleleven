@@ -1,21 +1,23 @@
 <template>
   <div class="reception">
-    <div v-for="(list, index) in listCard" :key="index" class="header">
-      <div>
-        亲爱的 {{ list.doneeName }}({{ list.doneePhone }})赠送你一张{{
-          list.cardType
-        }}：
+    <div class="img">
+      <van-swipe class="my-swipe" style="height: 750px" vertical>
+        <van-swipe-item v-for="(image, index) in images" :key="index">
+          <img v-lazy="image" class="img" />
+        </van-swipe-item>
+        <template #indicator>
+          <div class="custom-indicator"></div>
+        </template>
+      </van-swipe>
+    </div>
+    <div class="header" v-for="(item, index) in listCard" :key="index">
+      <div class="love">亲爱的{{ item.doneeName }}({{ item.doneePhone }}):</div>
+      <div class="love">
+        {{ item.giverName }}({{ item.giverPhone }})送你一张{{ item.cardType }}
       </div>
     </div>
-    <van-swipe class="my-swipe">
-      <van-swipe-item v-for="(image, index) in images" :key="index">
-        <img v-lazy="image" class="img" />
-      </van-swipe-item>
-    </van-swipe>
-
-    <div class="but">
-      <van-button type="primary" to="/">取消</van-button>
-      <van-button type="primary" @click="confirm">接受</van-button>
+    <div class="but" @click="confirm">
+      <a><img src="../image/接收赠卡.png" /></a>
     </div>
     <!-- <div class="popups">
       <van-overlay :show="isShow" @click="isShow = false">
@@ -50,7 +52,6 @@ export default {
       isShow: false,
       doneePhone: '',
       images: [
-        require('../assets/image/闺蜜文案.jpg'),
         require('../assets/image/品牌介绍.jpg'),
         require('../assets/image/活动套餐.jpg'),
         require('../assets/image/使用规则2.jpg'),
@@ -58,11 +59,13 @@ export default {
       tel: ''
     }
   },
+
   mounted () {
     this.getdonation()
+
   },
   methods: {
-    //根据二维码返回的电话号码查询信息
+    //根据分享id查询信息
     getdonation () {
       let data = {
         id: this.$route.query.id
@@ -81,9 +84,9 @@ export default {
           if (list[i].cardType === 1) {
             cardType = '闺蜜卡'
           } else if (list[i].cardType === 2) {
-            cardType = '感恩卡'
-          } else {
             cardType = '美妈卡'
+          } else {
+            cardType = '好友卡'
           }
           list[i].cardStatus = cardStatus
           list[i].cardType = cardType
@@ -91,6 +94,7 @@ export default {
         }
         this.listCard = list
         console.log(this.listCard)
+        this.image1()
       })
     },
 
@@ -101,50 +105,66 @@ export default {
       }
       updateCard(data).then(res => {
         console.log(res)
-
+        this.$router.push({ path: '/wx', query: { id: this.$route.query.id } })
       })
+    },
+    image1 () {
+      let image1 = ''
+      let cardType = ''
+      let list = this.listCard
+      list.forEach(el => {
+        cardType = el.cardType
+        console.log(el.cardType);
+      });
+
+      console.log(cardType)
+      if (cardType === '闺蜜卡') {
+        image1 = require('../image/闺蜜文案.jpg')
+      } else if (cardType === '美妈卡') {
+        image1 = require('../image/美妈文案.jpg')
+      } else {
+        image1 = require('../image/朋友感恩文案.jpg')
+      }
+      this.images.splice(0, 0, image1)
+
+      console.log(this.images);
     }
   }
 }
 </script>
 <style scope>
-.reception {
-  margin: 20px 15px;
-}
 .header {
-  z-index: 1;
+  position: absolute;
+  top: 60px;
+  left: 29px;
+  z-index: 999;
+}
+.love {
+  font-size: 15px;
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  line-height: 25px;
+  color: #216452;
 }
 .my-swipe .van-swipe-item {
   color: #fff;
   font-size: 20px;
   line-height: 150px;
   text-align: center;
-  height: 500px;
 }
 .img {
-  width: 355px;
-  height: 500px;
-  max-width: 100%;
-  max-height: 100%;
-  margin-top: 12px;
+  width: 100%;
 }
 .but {
   position: absolute;
   bottom: 0;
-  left: 30px;
+  margin: 0 120px;
 }
-.but button {
-  width: 100px;
-  margin-left: 35px;
-  margin-bottom: 10px;
-}
+
 .wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-}
-.block {
-  margin: 0 15px;
 }
 </style>

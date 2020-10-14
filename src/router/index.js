@@ -7,9 +7,12 @@ import reception from '@/components/reception'
 import homecode from '@/components/homecode'
 import givecode from '@/components/givecode'
 import mycard from '@/components/mycard'
+import coverage from '@/components/coverage'
 
 import admin from '@/pages/index'
 import details from '@/pages/details'
+
+import wx from '@/components/wx'
 
 Vue.use(Router)
 
@@ -59,6 +62,14 @@ export default new Router({
       path: '/mycard',
       name: 'mycard',
       component: mycard
+    }, {
+      path: '/wx',
+      name: 'wx',
+      component: wx
+    }, {
+      path: '/coverage',
+      name: 'coverage',
+      component: coverage
     }
   ]
 })

@@ -1,26 +1,30 @@
 <template>
   <div class="donation">
-    <div class="header" v-for="(item, index) in listCard" :key="index">
-      <div class="card" :style="{ background: color }"></div>
-      <div class="textCard" :style="{ color: color }">
-        {{ item.cardType }}
-      </div>
-      <div class="border">
-        <span :style="{ color: receive }">{{ item.cardStatus }}</span>
-      </div>
-      <div class="zeng">
-        赠予<span>{{ item.giverName }}</span>
-      </div>
-      <div class="phone">
-        <img src="../image/电话.png" />
-        <span>{{ item.giverPhone }}</span>
-      </div>
-      <div class="footer">
-        <div>
-          门店地址：<span>{{ item.store.storeAddress }}</span>
-        </div>
-        <div>
-          门店电话：<span>{{ item.store.storePhone }}</span>
+    <div class="image">
+      <div class="list">
+        <div class="header" v-for="(item, index) in listCard" :key="index">
+          <div class="card" :style="{ background: color }"></div>
+          <div class="textCard" :style="{ color: color }">
+            {{ item.cardType }}
+          </div>
+          <div class="border" :style="{ color: receive }">
+            {{ item.cardStatus }}
+          </div>
+          <div class="zeng">
+            赠予<span>{{ item.doneeName }}</span>
+          </div>
+          <div class="phone">
+            <img src="" />
+            <span>{{ item.doneePhone }}</span>
+          </div>
+          <div class="footer">
+            <div>
+              门店地址：<span>{{ item.store.storeAddress }}</span>
+            </div>
+            <div>
+              门店电话：<span>{{ item.store.storePhone }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -47,14 +51,8 @@ export default {
       return color
     }
   },
-  watch: {
-    doneePhone (val) {
-      val = this.doneePhone
-      this.getdonation(val)
-    }
-  },
-  mounted () {
-    this.doneePhone = this.$route.query.doneePhone
+  created () {
+    this.getdonation()
   },
   methods: {
     //根据条件查询信息
@@ -94,19 +92,29 @@ export default {
 </script>
 <style scoped>
 .donation {
-  width: 375px;
-  opacity: 1;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap-reverse;
+}
+.image {
+  background-image: url("../image/ping.jpg");
+  width: 100%;
+  height: 100%;
+}
+.list {
+  height: 98vh;
+  overflow-y: auto;
 }
 .header {
   width: 351px;
   height: 170px;
   background: #ffffff;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  opacity: 1;
   border-radius: 4px;
   margin-top: 11px;
   position: relative;
   left: 12px;
+  top: 0px;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
@@ -138,19 +146,12 @@ export default {
   border-radius: 2px;
   margin-top: 4px;
   margin-left: 232px;
-}
-.border span {
-  width: 39px;
-  height: 16px;
   font-size: 13px;
-  font-family: Microsoft YaHei UI;
-  font-weight: 400;
-  line-height: 16px;
+  line-height: 20px;
   color: #38adf1;
-  padding-top: 2px;
-  margin-left: 6px;
-  opacity: 1;
+  text-align: center;
 }
+
 .zeng {
   font-size: 17px;
   font-family: Microsoft YaHei UI;
@@ -170,6 +171,10 @@ export default {
   opacity: 1;
   margin-left: 11px;
 }
+.phone {
+  position: relative;
+  top: -32px;
+}
 .phone img {
   opacity: 1;
   border-radius: 4px;
@@ -188,13 +193,15 @@ export default {
   top: 12px;
 }
 .footer {
-  width: 335px;
+  width: calc(100% - 20px);
   height: 82px;
   background: #f5f8f9;
-  opacity: 1;
   border-radius: 4px;
-  margin-left: 8px;
-  margin-top: 8px;
+  position: relative;
+  top: -23px;
+  left: 0px;
+  margin: 0;
+  margin-left: 10px;
 }
 .footer div {
   font-size: 15px;

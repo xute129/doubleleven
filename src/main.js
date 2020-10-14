@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import Vant, { Lazyload } from 'vant';
 import 'vant/lib/index.css';
-
+import rem from './util/rem'
 Vue.use(Lazyload);
 Vue.use(Vant);
 
@@ -15,6 +15,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  rem,
   components: { App },
   template: '<App/>'
 })
