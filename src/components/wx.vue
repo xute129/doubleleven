@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img src="../image/我的卡.jpg" class="wx" />
+    <img src="../image/我的卡(1).jpg" class="wx" />
     <div v-for="(item, index) in listCard" :key="index">
       <div class="card">{{ item.cardType }}</div>
       <div class="select">
@@ -14,7 +14,7 @@
         </div>
         <div class="phone">
           <img src="../image/电话.png" style="width: 18px; height: 18px" />
-          {{ item.store.storePhone }}
+          {{ item.store.storePhone || "无" }}
         </div>
       </div>
     </div>
@@ -68,8 +68,6 @@ export default {
   background-position: center 0;
 }
 .card {
-  width: 108px;
-  height: 46px;
   font-size: 26px;
   font-family: Microsoft YaHei UI;
   font-weight: 400;
@@ -80,8 +78,6 @@ export default {
   left: 28px;
 }
 .select {
-  width: 291px;
-  height: 21px;
   font-size: 14px;
   font-family: Microsoft YaHei UI;
   font-weight: 400;
@@ -90,6 +86,10 @@ export default {
   position: absolute;
   left: 28px;
   top: 139px;
+}
+.address {
+  width: 291px;
+  text-align: left;
 }
 .select img {
   vertical-align: middle;

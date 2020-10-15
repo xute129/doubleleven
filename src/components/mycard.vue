@@ -97,7 +97,7 @@
 </template>
 <script>
 import { Addactivities, queryNearStore, getSignature, queryShopInfo, queryListStore, queryShopProvinceOrCity } from '../api/index'
-import wx from 'weixin-js-sdk'
+// import wx from 'weixin-js-sdk'
 import axios from 'axios'
 
 export default {
@@ -136,7 +136,9 @@ export default {
 
   created () {
     //初始化微信授权获取的code信息
-    this.list1 = JSON.parse(sessionStorage.getItem('listUsername'))
+    if (sessionStorage.getItem('listUsername')) {
+      this.list1 = JSON.parse(sessionStorage.getItem('listUsername'))
+    }
     this.num = this.$route.query.num
   },
 
@@ -145,22 +147,26 @@ export default {
     this.name = this.list1.name
     this.phone = this.list1.phone
     this.images = this.list1.headimgurl
-    this.num = JSON.parse(sessionStorage.getItem('num'))
-    this.execWx()
+    if (sessionStorage.getItem('num')) {
+      this.num = JSON.parse(sessionStorage.getItem('num'))
+    }
+    setTimeout(() => {
+      this.execWx()
+    }, 100)
     // this.getqueryListStore()
     this.getProvince()
   },
 
 
   methods: {
-    execWx () {
+    async execWx () {
       //根据微信规则获取经纬度
       const urls = location.href.split('#')[0]  // 动态获取当前页面链接,用于向后端获取签名location.href.split('#')[0]
       const data = {
         url: urls
       }
       console.log(data)
-      getSignature(data).then(res => { // 这是向后端发的请求,返回微信分享接口需要的签名
+      await getSignature(data).then(res => { // 这是向后端发的请求,返回微信分享接口需要的签名
         console.log(res)
         wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -250,8 +256,8 @@ export default {
       this.getqueryShopInfo();
     },
     onConfirms (value) {
-      this.province = value[0]
-      this.city = value[1]
+      this.province = value[0] || ''
+      this.city = value[1] || ''
       this.search()
       this.showPicker = false
       this.showSearch = true
@@ -305,8 +311,8 @@ export default {
         console.log(this.storeAddress, this.storePhone, this.storeNum)
         let arr = []
         if (res.data.data.length > 0) {
-          this.province = res.data.data[0].province
-          this.city = res.data.data[0].city
+          this.province = res.data.data[0].province || ''
+          this.city = res.data.data[0].city || ''
         }
         res.data.data.forEach(item => {
           arr.push({
@@ -321,12 +327,35 @@ export default {
 
       })
     },
+    checkPhone (phone) {
+      if (!(/^1[3456789]\d{9}$/.test(phone))) {
+        return false;
+      }
+      return true
+    },
     //添加信息
     sendCard () {
       let num = this.num
       let openid = this.openid
       let name = this.name
       let phone = this.phone
+      if (!this.username) {
+        alert('请填写用户名')
+        return
+      }
+      if (!this.userphone) {
+        alert('请填写手机号码')
+        return
+      } else if (!this.checkPhone(this.userphone)) {
+        alert('手机号填写有误！')
+        return false
+      }
+
+      if (!this.storeName) {
+        alert('请填写门店')
+        return
+      }
+
       const data = {
         cardType: num,
         openid: openid,

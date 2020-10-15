@@ -56,7 +56,7 @@
 
 <script>
 import { getWxUserInfo, getDonation } from '../api/index'
-import wx from 'weixin-js-sdk'
+// import wx from 'weixin-js-sdk'
 import axios from 'axios'
 export default {
   data () {
@@ -66,7 +66,7 @@ export default {
       images: [
         require('../image/主画面.png'),
         require('../assets/image/活动套餐.jpg'),
-        require('../image/zhuyemian.png'),
+        require('../image/4(5).jpg'),
         require('../assets/image/品牌介绍.jpg'),
       ],
       code: '',
@@ -104,9 +104,13 @@ export default {
       }
       getWxUserInfo(data).then(res => {
         console.log(res.data)
-        this.list = res.data.data
-        sessionStorage.setItem('listUsername', JSON.stringify(res.data.data))
-
+        console.log(res.data.message);
+        if (res.data.statusCode !== 200) {
+          alert(res.data.message)
+        } else {
+          this.list = res.data.data
+          sessionStorage.setItem('listUsername', JSON.stringify(res.data.data))
+        }
       })
     },
     // 截取url中的code方法
@@ -126,20 +130,25 @@ export default {
 
     //参与活动
     activity () {
-      this.$router.push({ path: '/activities' })
+      if (sessionStorage.getItem('listUsername')) {
+        this.$router.push({ path: '/activities' })
+      }
     },
 
     //我的转赠
     make () {
-      let list = JSON.parse(sessionStorage.getItem('listUsername'))
-      console.log(list)
-      const data = {
-        giverPhone: list.phone
+      console.log(sessionStorage.getItem('listUsername'))
+      if (sessionStorage.getItem('listUsername')) {
+        let list = JSON.parse(sessionStorage.getItem('listUsername'))
+        console.log(list)
+        const data = {
+          giverPhone: list.phone
+        }
+        getDonation(data).then(res => {
+          console.log(res)
+          this.$router.push({ path: '/donation', query: { giverPhone: list.phone } })
+        })
       }
-      getDonation(data).then(res => {
-        console.log(res)
-        this.$router.push({ path: '/donation', query: { giverPhone: list.phone } })
-      })
     },
   }
 }

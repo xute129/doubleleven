@@ -5,7 +5,7 @@
 </template>
 <script>
 import QRCode from 'qrcodejs2'
-import wx from 'weixin-js-sdk'
+// import wx from 'weixin-js-sdk'
 export default {
   mounted () {
     console.log(this.link)

@@ -25,9 +25,9 @@
           {{ item.giverName }}({{ item.giverPhone }})送你一张{{ item.cardType }}
         </div>
       </div>
-      <div class="but" @click="confirm">
-        <a><img src="../image/接收赠卡.png" /></a>
-      </div>
+    </div>
+    <div class="but" @click="confirm">
+      <a><img src="../image/接收赠卡.png" /></a>
     </div>
     <!-- <div class="popups">
       <van-overlay :show="isShow" @click="isShow = false">
@@ -62,16 +62,16 @@ export default {
       isShow: false,
       doneePhone: '',
       images: [
-        require('../assets/image/品牌介绍.jpg'),
         require('../assets/image/活动套餐.jpg'),
-        require('../assets/image/使用规则2.jpg'),
+        require('../image/5(5).jpg'),
+        require('../assets/image/品牌介绍.jpg'),
       ],
       tel: '',
       show: true
     }
   },
 
-  created () {
+  mounted () {
     this.getdonation()
   },
   methods: {
@@ -88,6 +88,9 @@ export default {
         id: parseInt(this.$route.query.id)
       }
       getDonation(data).then(res => {
+        if (res.data.statusCode !== 200) {
+          alert('未获取到用户信息')
+        }
         let list = []
         let cardStatus = ''
         let cardType = ''
