@@ -138,11 +138,11 @@ export default {
       });
 
       if (cardType === '闺蜜卡') {
-        image1 = require('../image/收卡-闺蜜文案(1).jpg')
+        image1 = require('../image/收卡-闺蜜文案(1)(2).jpg')
       } else if (cardType === '美妈卡') {
-        image1 = require('../image/收卡-美妈文案(1).jpg')
+        image1 = require('../image/收卡-美妈文案(1)(2).jpg')
       } else {
-        image1 = require('../image/收卡-朋友文案(1).jpg')
+        image1 = require('../image/收卡-朋友文案(1)(2).jpg')
       }
       this.images.splice(0, 0, image1)
       console.log(this.images);

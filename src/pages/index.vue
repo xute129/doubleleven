@@ -1,19 +1,27 @@
 <template>
   <div class="admin">
-    <input type="text" placeholder="请输入门店编号" />
-    <div><van-button type="primary">查询</van-button></div>
+    <input type="text" v-model="storeNum" placeholder="请输入门店编号" />
+    <div><van-button type="primary" @click="query">查询</van-button></div>
     <div class="footer">
-      操作说明: <br />1.输入门店编号查询相应门店的活动详情。
-      2.找到与顾客提供信息相同的条目。<br />
-      3.记录相关信息即可开始护理。
+      操作说明:
+      <div>1.输入门店编号查询相应门店的活动详情。</div>
+      <div>2.找到与顾客提供信息相同的条目。</div>
+      <div>3.记录相关信息即可开始护理。</div>
     </div>
   </div>
 </template>
 <script>
+import { getDonation } from '../api/index'
 export default {
   data () {
     return {
-      shop: ''
+      storeNum: ''
+    }
+  },
+  methods: {
+    query () {
+      console.log(this.storeNum);
+      this.$router.push({ path: '/details', query: { storeNum: this.storeNum } })
     }
   }
 }
@@ -22,8 +30,8 @@ export default {
 .admin input {
   width: 327px;
   height: 48px;
+  font-size: 17px;
   background: #f5f7f9;
-  opacity: 1;
   border-radius: 4px;
   border: 0px;
   margin-left: 24px;

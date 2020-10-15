@@ -64,7 +64,7 @@ export default {
       isShow: false,
       giverPhone: '',
       images: [
-        require('../image/主画面.png'),
+        require('../image/主画面(1).jpg'),
         require('../assets/image/活动套餐.jpg'),
         require('../image/4(5).jpg'),
         require('../assets/image/品牌介绍.jpg'),
