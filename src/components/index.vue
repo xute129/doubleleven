@@ -64,10 +64,10 @@ export default {
       isShow: false,
       giverPhone: '',
       images: [
-        require('../image/主画面(1).jpg'),
-        require('../assets/image/活动套餐.jpg'),
+        require('../image/1-1(5).jpg'),
+        require('../assets/image/1-2.jpg'),
         require('../image/4(5).jpg'),
-        require('../assets/image/品牌介绍.jpg'),
+        require('../assets/image/1-4.jpg'),
       ],
       code: '',
       list: {},
@@ -86,8 +86,8 @@ export default {
     getCode () { // 非静默授权，第一次有弹框
       console.log('code', this.code)
 
-      var local = 'http://tools.fwh1988.cn/active1111/' // 获取页面url
-      var appid = 'wxce2648786b0f1843'
+      var local = 'http://wx.fawa1988.com/double11/' // 获取页面url
+      var appid = 'wx722feb97ad2ad6ef'
       if (!sessionStorage.getItem('mycode')) {
         const code = this.getUrlCode().code
         if (code) {

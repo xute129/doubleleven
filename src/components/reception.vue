@@ -19,10 +19,12 @@
     <div v-if="show">
       <div class="header" v-for="(item, index) in listCard" :key="index">
         <div class="love">
-          亲爱的{{ item.doneeName }}({{ item.doneePhone }}):
+          亲爱的{{ item.doneeName }} ({{ item.doneePhone }}):
         </div>
         <div class="love">
-          {{ item.giverName }}({{ item.giverPhone }})送你一张{{ item.cardType }}
+          {{ item.giverName }}({{ item.giverPhone }}) 送你一张{{
+            item.cardType
+          }}
         </div>
       </div>
     </div>
@@ -62,9 +64,9 @@ export default {
       isShow: false,
       doneePhone: '',
       images: [
-        require('../assets/image/活动套餐.jpg'),
+        require('../image/3(3).jpg'),
         require('../image/5(5).jpg'),
-        require('../assets/image/品牌介绍.jpg'),
+        require('../assets/image/1-4.jpg'),
       ],
       tel: '',
       show: true
@@ -138,11 +140,11 @@ export default {
       });
 
       if (cardType === '闺蜜卡') {
-        image1 = require('../image/收卡-闺蜜文案(1)(2).jpg')
+        image1 = require('../image/jieshou.jpg')
       } else if (cardType === '美妈卡') {
-        image1 = require('../image/收卡-美妈文案(1)(2).jpg')
+        image1 = require('../image/meima.jpg')
       } else {
-        image1 = require('../image/收卡-朋友文案(1)(2).jpg')
+        image1 = require('../image/pengyou.jpg')
       }
       this.images.splice(0, 0, image1)
       console.log(this.images);
@@ -161,16 +163,16 @@ export default {
 }
 .header {
   position: absolute;
-  top: 60px;
+  top: 75px;
   left: 29px;
   z-index: 999;
 }
 .love {
-  font-size: 15px;
+  font-size: 16px;
   font-family: Source Han Sans CN;
   font-weight: 400;
   line-height: 25px;
-  color: #216452;
+  color: #00584a;
 }
 .my-swipe .van-swipe-item {
   color: #fff;

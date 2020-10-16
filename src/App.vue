@@ -2,7 +2,7 @@
   <div id="app">
     <router-view />
     <audio autoplay ref="audio">
-      <source src="../src/assets/audio/H5音乐.mp3" type="audio/mpeg" />
+      <source src="../src/assets/audio/y123.mp3" type="audio/mpeg" />
     </audio>
   </div>
 </template>

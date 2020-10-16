@@ -1,6 +1,6 @@
 <template>
   <div class="mycard">
-    <img src="../image/信息输入bg.png" class="image" />
+    <img :src="image" class="image" />
     <div>
       <div class="user">
         <div><img :src="images" class="make" /></div>
@@ -103,6 +103,7 @@ import axios from 'axios'
 export default {
   data () {
     return {
+      image: require('../image/chulai.png'),
       num: '',
       openid: '',
       name: '',
@@ -124,8 +125,8 @@ export default {
       city: '',
       show: false,
       showPicker: false,
-      columns: ['郑州市', '宁波', '温州', '绍兴', '湖州', '嘉兴', '金华', '衢州'],
-      list: ['河南省', '湖南省', '广东省'],
+      columns: [],
+      list: [],
       list1: [],
       show1: false,
       areaColumns: [],
@@ -170,7 +171,7 @@ export default {
         console.log(res)
         wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: 'wxce2648786b0f1843', // 必填，公众号的唯一标识
+          appId: 'wx722feb97ad2ad6ef', // 必填，公众号的唯一标识
           timestamp: res.data.data.timestamp, // 必填，生成签名的时间戳
           nonceStr: res.data.data.noncestr, // 必填，生成签名的随机串
           signature: res.data.data.signature, // 必填，签名

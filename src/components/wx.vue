@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img src="../image/我的卡(1).jpg" class="wx" />
+    <img src="../image/wode.jpg" class="wx" />
     <div v-for="(item, index) in listCard" :key="index">
       <div class="card">{{ item.cardType }}</div>
       <div class="select">
