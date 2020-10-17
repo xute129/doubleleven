@@ -103,7 +103,7 @@ import axios from 'axios'
 export default {
   data () {
     return {
-      image: require('../image/chulai.png'),
+      image: require('../image/xinxi(6).jpg'),
       num: '',
       openid: '',
       name: '',
@@ -131,7 +131,8 @@ export default {
       show1: false,
       areaColumns: [],
       showSearch: false,
-      searchVal: ''
+      searchVal: '',
+      shareAddress: {}
     }
   },
 
@@ -139,6 +140,11 @@ export default {
     //初始化微信授权获取的code信息
     if (sessionStorage.getItem('listUsername')) {
       this.list1 = JSON.parse(sessionStorage.getItem('listUsername'))
+    }
+    //初始化经纬度
+    if (sessionStorage.getItem('shareAddress')) {
+      this.shareAddress = JSON.parse(sessionStorage.getItem('shareAddress'))
+
     }
     this.num = this.$route.query.num
   },
@@ -151,55 +157,15 @@ export default {
     if (sessionStorage.getItem('num')) {
       this.num = JSON.parse(sessionStorage.getItem('num'))
     }
-    setTimeout(() => {
-      this.execWx()
-    }, 100)
+
     // this.getqueryListStore()
     this.getProvince()
+    this.getqueryNearStore()
   },
 
 
   methods: {
-    async execWx () {
-      //根据微信规则获取经纬度
-      const urls = location.href.split('#')[0]  // 动态获取当前页面链接,用于向后端获取签名location.href.split('#')[0]
-      const data = {
-        url: urls
-      }
-      console.log(data)
-      await getSignature(data).then(res => { // 这是向后端发的请求,返回微信分享接口需要的签名
-        console.log(res)
-        wx.config({
-          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: 'wx722feb97ad2ad6ef', // 必填，公众号的唯一标识
-          timestamp: res.data.data.timestamp, // 必填，生成签名的时间戳
-          nonceStr: res.data.data.noncestr, // 必填，生成签名的随机串
-          signature: res.data.data.signature, // 必填，签名
-          jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表
-        })
-        let _thes = this
-        window.share_config = {
-          share: {
-            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-            success: function (res) {
-              _thes.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-              _thes.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-              _thes.speed = res.speed; // 速度，以米/每秒计
-              _thes.accuracy = res.accuracy; // 位置精度
-              console.log(res, 'rrrr');
-              console.log(_thes.latitude, '纬度')
-              _thes.getqueryNearStore()
-            }
-          }
-        }
-        wx.ready(function () {
-          wx.getLocation(share_config.share); //获取地理位置
-        });
-      })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
+
     // 查询省
     async getProvince () {
       let areaColumns = []
@@ -290,11 +256,12 @@ export default {
     },
     //根据经纬度获取地址
     getqueryNearStore () {
-      let latitude = this.latitude
-      let longitude = this.longitude
+      console.log(this.shareAddress, 'shareAddress');
+      // let latitude = this.latitude
+      // let longitude = this.longitude
       const data = {
-        latitude: latitude,
-        longitude: longitude,
+        latitude: this.shareAddress.latitude,
+        longitude: this.shareAddress.longitude,
         count: 5,
         offset: 0
       }

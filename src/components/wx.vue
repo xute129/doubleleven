@@ -12,7 +12,7 @@
           <img src="../image/图标.png" style="width: 18px; height: 18px" />
           {{ item.store.storeAddress }}
         </div>
-        <div class="phone">
+        <div class="phone" @click="callPhone">
           <img src="../image/电话.png" style="width: 18px; height: 18px" />
           {{ item.store.storePhone || "无" }}
         </div>
@@ -54,6 +54,9 @@ export default {
         this.listCard = list
         console.log(this.listCard)
       })
+    },
+    callPhone () {
+      window.location.href = 'tel://' + this.storePhone
     },
   }
 }

@@ -92,6 +92,7 @@ export default {
         const code = this.getUrlCode().code
         if (code) {
           sessionStorage.setItem('mycode', code)
+          this.execWx()
           this.init()
         } else {
           window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=111#wechat_redirect`
@@ -150,6 +151,48 @@ export default {
         })
       }
     },
+    // 获取经纬度
+    async execWx () {
+      //根据微信规则获取经纬度
+      const urls = location.href.split('#')[0]  // 动态获取当前页面链接,用于向后端获取签名location.href.split('#')[0]
+      const data = {
+        url: urls
+      }
+      console.log(data)
+      await getSignature(data).then(res => { // 这是向后端发的请求,返回微信分享接口需要的签名
+        console.log(res)
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: 'wxce2648786b0f1843', // 必填，公众号的唯一标识
+          timestamp: res.data.data.timestamp, // 必填，生成签名的时间戳
+          nonceStr: res.data.data.noncestr, // 必填，生成签名的随机串
+          signature: res.data.data.signature, // 必填，签名
+          jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表
+        })
+        let _thes = this
+        window.share_config = {
+          share: {
+            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+            success: function (res) {
+              _thes.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+              _thes.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+              _thes.speed = res.speed; // 速度，以米/每秒计
+              _thes.accuracy = res.accuracy; // 位置精度
+              console.log(res, 'rrrr');
+              console.log(_thes.latitude, '纬度')
+              sessionStorage.setItem('shareAddress', JSON.stringify(res))
+            }
+          }
+        }
+        wx.ready(function () {
+          wx.getLocation(share_config.share); //获取地理位置
+        });
+      })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+
   }
 }
 </script>
